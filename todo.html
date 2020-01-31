@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>To-do List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="syl.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="jquery.editable.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="img1">
+            <h1 align="center">To-Do-List</h1>
+            <p><span><i class='fas fa-refresh'></i></span></p>
+            <div class="form-row">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="form-group col-md-9">
+                    <input type="text" class="form-control" id="txtb" placeholder="Enter the task that you need to do">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col" id="date">
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="div2">
+            <div class="notcomp" id="demo">
+                <h3>List of tasks you should do for the day</h3>
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            // var refresh=$("<i class='fas fa-refresh'></i>");
+            // const refr=document.getElementById("ref");
+            const dateElemet = document.getElementById("date");
+            const options = { weekday: "long", month: "short", day: "numeric" }
+            const today = new Date();
+            dateElemet.innerHTML = today.toLocaleDateString("en-US", options)
+            $("#txtb").on("keyup", function (e) {
+                if ($("#txtb").val() == "")
+                    alert("You must write something");
+                if (e.keyCode == 13 && $("#txtb").val() != "") {
+                    var task = $("<div class='task'></div>").text($("#txtb").val());
+                    var del = $("<i class='fas fa-trash-alt'></i>").click(function () {
+                        var p = $(this).parent();
+                        p.fadeOut(function () {
+                            p.remove();
+                        });
+                    });
+                    var check = $("<i class='fas fa-check'></i>").click(function () {
+                        var p = $(this).parent();
+                        p.toggleClass("completed");
+
+                    }
+                    );
+                    var edit = $("<i class='fas fa-pencil-alt'></i>").click(function () {
+                        var p = $(this).parent();
+                        var inp = $("<input class='inn' contenteditable='true'/>").val(p.text());
+                        // $('.inn').setEditable();
+                        p.replaceWith(inp);
+                        var save = function () {
+                            var it = $("<div class='task'></div>");
+                            var taskedit = $("<div class='task'></div>").text(inp.val());
+                            var del = $("<i class='fas fa-trash-alt'></i>").click(function () {
+                                var p = $(this).parent();
+                                p.fadeOut(function () {
+                                    p.remove();
+                                });
+                            });
+                            var check = $("<i class='fas fa-check'></i>").click(function () {
+                                var p = $(this).parent();
+                                p.toggleClass("completed");
+
+                            }
+                            );
+
+                            taskedit.append(del, check, edit)
+                            inp.replaceWith(taskedit);
+                            // task.append(del,check,edit);
+                        };
+                        inp.one('blur', save).focus();
+
+                    })
+                    task.append(del, check, edit);
+
+                    $(".notcomp").append(task);
+
+                    $("#txtb").val("");
+
+                }
+            })
+        </script>
+
+</body>
+
+</html>
